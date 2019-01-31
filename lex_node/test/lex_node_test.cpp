@@ -219,7 +219,6 @@ void h_sig_sigint(int signum)
 int main(int argc, char ** argv)
 {
   signal(SIGINT, h_sig_sigint);
-  ::testing::InitGoogleTest(&argc, argv);
   ::testing::InitGoogleMock(&argc, argv);
   rclcpp::init(argc, argv);
   auto result = RUN_ALL_TESTS();
