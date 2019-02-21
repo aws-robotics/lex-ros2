@@ -115,7 +115,7 @@ if(BUILD_TESTING)
   ament_find_gmock()
   include_directories(${GMOCK_INCLUDE_DIRS})
   ament_lint_auto_find_test_dependencies()
-  ament_add_gtest(test_lex_node
+  ament_add_gmock(test_lex_node
           test/lex_node_test.cpp
   )
   if(TARGET test_lex_node)
