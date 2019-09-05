@@ -51,8 +51,11 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
+  rclcpp::NodeOptions node_options;
+  node_options.allow_undeclared_parameters(true);
+  node_options.automatically_declare_parameters_from_overrides(true);
 
-  auto lex_node = std::make_shared<Aws::Lex::LexNode>();
+  auto lex_node = std::make_shared<Aws::Lex::LexNode>(node_options);
   Aws::Utils::Logging::InitializeAWSLogging(
     Aws::MakeShared<Aws::Utils::Logging::AWSROSLogger>("lex_node",
     Aws::Utils::Logging::LogLevel::Debug, lex_node));
