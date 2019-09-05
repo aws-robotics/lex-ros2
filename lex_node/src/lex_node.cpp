@@ -33,8 +33,8 @@ namespace Lex
 
 using AudioTextConversation = lex_common_msgs::srv::AudioTextConversation;
 
-LexNode::LexNode()
-: Node("lex_node") {}
+LexNode::LexNode(rclcpp::NodeOptions node_options)
+: Node("lex_node", std::string(), node_options) {}
 
 LexRequest & operator<<(
   LexRequest & out_request,

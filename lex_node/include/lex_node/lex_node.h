@@ -66,7 +66,7 @@ public:
   /**
    * Constructor.
    */
-  LexNode();
+  LexNode(rclcpp::NodeOptions node_options = rclcpp::NodeOptions());
 
   /**
    * Destructor.
