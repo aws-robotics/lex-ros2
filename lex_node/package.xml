@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<package format="2">
+<package format="3">
     <name>lex_node</name>
-    <version>1.0.0</version>
+    <version>3.0.0</version>
     <description>Package providing a ROS node for interacting with Amazon Lex</description>
 
     <author email="ros-contributions@amazon.com">AWS RoboMaker</author>
@@ -13,7 +13,7 @@
 
     <depend version_gte="2.0.0">aws_common</depend>
     <depend version_gte="1.0.0">lex_common</depend>
-    
+
     <build_depend>rclcpp</build_depend>
     <build_depend>lex_common_msgs</build_depend>
     <build_depend>aws_ros2_common</build_depend>
@@ -23,11 +23,11 @@
     <exec_depend>rclcpp</exec_depend>
     <exec_depend>lex_common_msgs</exec_depend>
     <exec_depend>aws_ros2_common</exec_depend>
-    
+
     <test_depend>ament_cmake_gmock</test_depend>
     <test_depend>ament_lint_common</test_depend>
     <test_depend>ament_lint_auto</test_depend>
-    
+
     <export>
         <build_type>ament_cmake</build_type>
     </export>
