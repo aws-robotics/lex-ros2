@@ -2,8 +2,8 @@
 Changelog for package lex_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.0.0 (2019-09-06)
+------------------
 * Merge pull request `#5 <https://github.com/aws-robotics/lex-ros2/issues/5>`_ from aws-robotics/version-bump
   Bump to version 3.0.0
 * Bump to version 3.0.0
