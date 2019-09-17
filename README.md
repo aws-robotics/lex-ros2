@@ -1,7 +1,7 @@
 # lex_node
 
 ## Overview
-The ROS `lex_node` node enables a robot to comprehend natural language commands by voice or textual input and respond through a set of actions, which an AWS Lex Bot maps to ROS messages. Out of the box this node provides a ROS interface to communicate with a specified Amazon Lex bot (configured via lex_config.yaml) and requires configuration of AWS credentials. The Amazon Lex bot needs to be defined with responses and slots for customer prompts. A set of default slots and mappings are demonstrated in the [sample app] and include actions as “Create <location_name>,” “Go to <location_name>” and “Stop.” Additional guides on configuring bots with are available at [Getting Started with Amazon Lex].
+The ROS `lex_node` node enables a robot to comprehend natural language commands by voice or textual input and respond through a set of actions, which an AWS Lex Bot maps to ROS messages. Out of the box this node provides a ROS interface to communicate with a specified Amazon Lex bot (configured via sample_configuration.yaml) and requires configuration of AWS credentials. The Amazon Lex bot needs to be defined with responses and slots for customer prompts. A set of default slots and mappings are demonstrated in the [sample app] and include actions as “Create <location_name>,” “Go to <location_name>” and “Stop.” Additional guides on configuring bots with are available at [Getting Started with Amazon Lex].
 
 Delivering a voice-enabled customer experience (e.g. “Robot, go to x”) will require dialog facilitation, wake word, and offline processing which are not yet provided by this integration. A wake word would trigger the dialog facilitation node to start recording and send the audio to Amazon Lex, then prompt the user for more information should Amazon Lex require it.
 
@@ -87,8 +87,7 @@ An example launch file called `lex_node.launch.py` is provided.
 4. Modify the configuration file in `config/sample_configuration.yaml` to reflect the new alias
 
 ### Run the node
-- **With** launch file using parameters in .yaml format (example provided)
-  - ROS: `ros2 launch lex_node lex.launch.py`
+  - `ros2 launch lex_node lex.launch.py`
 
 ### Send a test voice message 
     `ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'make a reservation'}"`
