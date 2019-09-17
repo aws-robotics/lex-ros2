@@ -1,7 +1,5 @@
 # lex_node
 
-**Note: this repository is under active development. The package provided here is a release candidate; the API may change without notice and no support is provided for it at the moment.**
-
 ## Overview
 The ROS `lex_node` node enables a robot to comprehend natural language commands by voice or textual input and respond through a set of actions, which an AWS Lex Bot maps to ROS messages. Out of the box this node provides a ROS interface to communicate with a specified Amazon Lex bot (configured via lex_config.yaml) and requires configuration of AWS credentials. The Amazon Lex bot needs to be defined with responses and slots for customer prompts. A set of default slots and mappings are demonstrated in the [sample app] and include actions as “Create <location_name>,” “Go to <location_name>” and “Stop.” Additional guides on configuring bots with are available at [Getting Started with Amazon Lex].
 
@@ -19,11 +17,15 @@ The source code is released under an [Apache 2.0].
 **Maintainer**: AWS RoboMaker, ros-contributions@amazon.com
 
 ### Supported ROS Distributions
-- Crystal 
+- Dashing 
 
 ### Build status
 
-@TODO: build status
+* Travis CI:
+    * "master" branch [![Build Status](https://travis-ci.org/aws-robotics/lex-ros2.svg?branch=master)](https://travis-ci.org/aws-robotics/lex-ros2/branches)
+    * "release-latest" branch [![Build Status](https://travis-ci.org/aws-robotics/lex-ros2.svg?branch=release-latest)](https://travis-ci.org/aws-robotics/lex-ros2/branches)
+ * ROS build farm:
+   * ROS Dashing @ u18.04 Bionic [![Build Status](http://build.ros2.org/job/Dbin_uB64__lex_node__ubuntu_bionic_amd64__binary/badge/icon)](http://build.ros2.org/job/Dbin_uB64__lex_node__ubuntu_bionic_amd64__binary)
 
 ## Installation
 
@@ -37,7 +39,7 @@ This node requires an IAM User with the following permission policy:
 On Ubuntu you can install the latest version of this package using the following command
 
         sudo apt-get update
-        sudo apt-get install -y ros-crystal-lex-node
+        sudo apt-get install -y ros-$ROS_DISTRO-lex-node
 
 ### Building from Source
 
@@ -49,10 +51,8 @@ To build from source you'll need to create a new workspace, clone and checkout t
 
 - Clone the package into the source directory . 
 
-_Note: Replace __`{MAJOR.VERSION}`__ below with the latest major version number to get the latest release branch._
-
         cd ~/ros-workspace/src
-        git clone https://github.com/aws-robotics/lex-ros2.git -b release-v{MAJOR.VERSION}
+        git clone https://github.com/aws-robotics/lex-ros2.git -b release-latest
 
 - Install dependencies
 
@@ -68,12 +68,10 @@ _Note: If building the master branch instead of a release branch you may need to
 
 - Configure ROS library Path
 
-        source ~/ros-workspace/install/setup.bash
-
+        source ~/ros-workspace/install/local_setup.bash
 
 - Build and run the unit tests
 
-        colcon build --packages-select lex_node --cmake-target tests
         colcon test --packages-select lex_node && colcon test-result --all
 
 
@@ -93,7 +91,7 @@ An example launch file called `lex_node.launch.py` is provided.
   - ROS: `ros2 launch lex_node lex.launch.py`
 
 ### Send a test voice message 
-    `ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'make a reservation', audio_request: ''}"`
+    `ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'make a reservation'}"`
 
 ### Verify the test voice was received
 - Receive response from Amazon Lex and continue conversation
@@ -132,42 +130,13 @@ An example configuration file called `sample_configuration.yaml` is provided.
 | bot_name | *string* | e.g. “BookTrip” (corresponds to Amazon Lex bot) | 
 | bot_alias | *string* | e.g. “Demo” | 
 
-
-## Performance and Benchmark Results
-We evaluated the performance of this node by runnning the followning scenario on a Raspberry Pi 3 Model B:
-
-- Launch a baseline graph containing the talker and listener nodes from the [roscpp_tutorials package](https://wiki.ros.org/roscpp_tutorials), plus two additional nodes that collect CPU and memory usage statistics. Allow the nodes to run for 60 seconds. 
-- Launch the ROS `lex_node` using the launch file `lex_node.launch` as described above. At the same time, make calls to the `/lex_node/lex_conversation` service by running the following script in the background: 
-
-```bash
-ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'Make a reservation', audio_request: ''}" && sleep 1
-ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'Seattle, WA', audio_request: ''}" && sleep 1
-ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'Tomorrow', audio_request: ''}" && sleep 1
-ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'Next Monday', audio_request: ''}" && sleep 1
-ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: '40', audio_request: ''}" && sleep 1
-ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'economy', audio_request: ''}" && sleep 1 
-ros2 service call /lex_conversation lex_common_msgs/AudioTextConversation "{content_type: 'text/plain; charset=utf-8', accept_type: 'text/plain; charset=utf-8', text_request: 'yes', audio_request: ''}"
-```
-
-- Allow the nodes to run for 180 seconds. 
-- Terminate the ROS `lex_node`, and allow the remaining nodes to run for 60 seconds. 
-
-The following graph shows the CPU usage during that scenario. The 1 minute average CPU usage starts at 15% during the launch of the baseline graph, and stabilizes around 9%. When we launch the `lex_node` node around second 85 the 1 minute average CPU increases up to a peak of 27.75%, and stabilizes around 24% while the `lex_node` node serves the service calls. After that the 1 minute average CPU usage is kept around 12% until we stop the `lex_node` node around second 360. 
-
-![cpu](wiki/images/cpu.svg)
-
-The following graph shows the memory usage during that scenario.  We start with a memory usage of around 253 MB for the baseline graph, that increases to a around 280 MB (+10.67%) after launching the `lex_node` node around second 85, and increases again to a peak of 300 (+18.58% wrt initial value) while the `lex_node` node serves the service calls. After that the memory usage decreases to around 278 MB, and keeps this way until going back to 253 MB after we stop the `lex_node` node.
-
-![memory](wiki/images/memory.svg)
-
-
 ## Node
 
 ### lex_node
 Enables a robot to comprehend natural language commands by voice or textual input and respond through a set of actions.
 
 #### Services
-**Topic**: ~/lex_conversation
+**Topic**: /lex_conversation
 
 #### AudioTextConversation
 **Request**:
