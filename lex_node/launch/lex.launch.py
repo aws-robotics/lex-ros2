@@ -39,9 +39,6 @@ def generate_launch_description():
             node_executable='lex_node',
             node_name=LaunchConfiguration('node_name'),
             parameters=[LaunchConfiguration('config_file')],
-            output='screen',
-            additional_env={
-                'RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED': '1'
-            },
+            output='screen'
         ),
     ])
