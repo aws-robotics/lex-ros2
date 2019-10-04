@@ -18,15 +18,27 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
-    # TODO(wjwwood): Use a substitution to find share directory once this is implemented in launch
-    parameters_file_path = os.path.join(get_package_share_directory('lex_node'),
+    config_file_path = os.path.join(get_package_share_directory('lex_node'),
                                         'config', 'sample_configuration.yaml')
     return LaunchDescription([
-        Node(package='lex_node',
-             node_executable='lex_node',
-             parameters=[parameters_file_path],
-             output='screen'),
+        DeclareLaunchArgument(
+            name='node_name',
+            default_value='lex_node'
+        ),
+        DeclareLaunchArgument(
+            name='config_file',
+            default_value=config_file_path
+        ),
+        Node(
+            package='lex_node',
+            node_executable='lex_node',
+            node_name=LaunchConfiguration('node_name'),
+            parameters=[LaunchConfiguration('config_file')],
+            output='screen'
+        ),
     ])

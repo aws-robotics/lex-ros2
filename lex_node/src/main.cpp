@@ -49,6 +49,9 @@ void shutdown(const Aws::SDKOptions & options)
  */
 int main(int argc, char * argv[])
 {
+
+  setvbuf(stdout, NULL, _IONBF, BUFSIZ);
+
   rclcpp::init(argc, argv);
 
   rclcpp::NodeOptions node_options;
