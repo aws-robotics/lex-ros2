@@ -14,6 +14,7 @@
 """Launch a lifecycle lex node"""
 
 import os
+import yaml
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -25,20 +26,44 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     config_file_path = os.path.join(get_package_share_directory('lex_node'),
                                         'config', 'sample_configuration.yaml')
+    with open(config_file_path, 'r') as f:
+      config_text = f.read()
+    config_yaml = yaml.safe_load(config_text)
+    default_aws_region = config_yaml['lex_node']['ros__parameters']['aws_client_configuration']['region']
+    default_lex_user_id = config_yaml['lex_node']['ros__parameters']['lex_configuration']['user_id']
+
     return LaunchDescription([
         DeclareLaunchArgument(
-            name='node_name',
-            default_value='lex_node'
+            name='aws_region',
+            default_value=os.environ.get('ROS_AWS_REGION', default_aws_region),
         ),
         DeclareLaunchArgument(
             name='config_file',
             default_value=config_file_path
         ),
+        DeclareLaunchArgument(
+            name='node_name',
+            default_value='lex_node'
+        ),
+        DeclareLaunchArgument(
+            name='user_id',
+            default_value=os.environ.get('LEX_USER_ID', default_lex_user_id),
+        ),
         Node(
             package='lex_node',
             node_executable='lex_node',
             node_name=LaunchConfiguration('node_name'),
-            parameters=[LaunchConfiguration('config_file')],
+            parameters=[
+                LaunchConfiguration('config_file'),
+                {
+                    'aws_client_configuration': {
+                        'region': LaunchConfiguration('aws_region')
+                    },
+                    'lex_configuration': {
+                        'user_id': LaunchConfiguration('user_id')
+                    }
+                }
+            ],
             output='screen'
         ),
     ])
