@@ -2,6 +2,28 @@
 Changelog for package lex_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#9 <https://github.com/aws-robotics/lex-ros2/issues/9>`_ from aws-robotics/bump-version
+  3.1.0
+* 3.1.0
+* Merge pull request `#8 <https://github.com/aws-robotics/lex-ros2/issues/8>`_ from aws-robotics/add-region-userid
+  Allow setting region or user_id from env var or param
+* Allow setting region or user_id from env var or param
+  - Allow launching this node with a specific aws region or user_id by
+  setting ROS_AWS_REGION or LEX_USER_ID or passing them as parameters to
+  the launch file.
+* Merge pull request `#7 <https://github.com/aws-robotics/lex-ros2/issues/7>`_ from aws-robotics/allow-config-change
+  Allow specifying config_file and node_name
+* Make logging stream to stdout in code instead of env var
+  - This is how the ros2/demos samples ensure that logs stream to stdout
+  instead of buffering. Doing it this way will be more reliable than
+  setting the env var in the launch file.
+* Allow specifying config_file and node_name
+  - Add parameters to allow the user of this node to specify their own
+  config file and node name.
+* Contributors: Tim Robinson
+
 3.0.0 (2019-09-06)
 ------------------
 * Merge pull request `#5 <https://github.com/aws-robotics/lex-ros2/issues/5>`_ from aws-robotics/version-bump
