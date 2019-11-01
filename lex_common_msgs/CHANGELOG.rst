@@ -2,8 +2,8 @@
 Changelog for package lex_common_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.1.0 (2019-11-01)
+------------------
 * 3.1.0
 * Contributors: ryanewel
 
