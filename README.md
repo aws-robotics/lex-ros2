@@ -26,9 +26,6 @@ The source code is released under an [Apache 2.0].
 
 
 
-* Travis CI:
-    * "master" branch [![Build Status](https://travis-ci.org/aws-robotics/lex-ros2.svg?branch=master)](https://travis-ci.org/aws-robotics/lex-ros2/branches)
-    * "release-latest" branch [![Build Status](https://travis-ci.org/aws-robotics/lex-ros2.svg?branch=release-latest)](https://travis-ci.org/aws-robotics/lex-ros2/branches)
  * ROS build farm:
    * ROS Dashing @ u18.04 Bionic [![Build Status](http://build.ros2.org/job/Dbin_uB64__lex_node__ubuntu_bionic_amd64__binary/badge/icon)](http://build.ros2.org/job/Dbin_uB64__lex_node__ubuntu_bionic_amd64__binary)
 
